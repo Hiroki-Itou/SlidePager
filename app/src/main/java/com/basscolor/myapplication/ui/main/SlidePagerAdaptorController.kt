@@ -3,45 +3,44 @@ package com.basscolor.myapplication.ui.main
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.basscolor.myapplication.R
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.pager_fragment.view.*
 
 
-class SlidePagerAdaptorController( context: Context, attrs: AttributeSet) : FrameLayout(context,attrs) {
+class SlidePagerAdaptorController(context: Context, attrs: AttributeSet) :
+    FrameLayout(context, attrs) {
 
-
-    private var viewListener : ViewListener? = null
-
-    private var view:View? = null
-
-    init {
-        val inflater = LayoutInflater.from(context)
-        view = inflater.inflate( R.layout.pager_fragment, this)
+    fun setAdaptor(adapter: SlidePagerAdaptor) {
+        val page = LayoutInflater.from(context).inflate(R.layout.pager_fragment, this)
+        page.viewPager.adapter = adapter
+        settingIndicator()
     }
 
-    fun setViewListener(viewListener: ViewListener) {
-        this.viewListener = viewListener
+    private fun settingIndicator() {
+        viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        TabLayoutMediator(indicator, viewPager) { _, _ -> }.attach()
     }
 
-    fun setFragment(fragment : Fragment){
-        view?.viewPager?.adapter = SlidePagerAdaptor(fragment)
+}
+
+class SlidePagerAdaptor(fragment: Fragment, private val listener: ViewListener) :
+    FragmentStateAdapter(fragment) {
+
+    var count = 1
+
+    override fun getItemCount(): Int {
+        return count
     }
 
-
-    inner class SlidePagerAdaptor(fragment: Fragment) : FragmentStateAdapter(fragment) {
-        override fun getItemCount(): Int {
-            return 3
-        }
-
-        override fun createFragment(position: Int): Fragment {
-            return viewListener?.setViewForPosition(position)!!
-        }
-
+    override fun createFragment(position: Int): Fragment {
+        return listener.setViewForPosition(position)
     }
+
 }
 
 interface ViewListener {

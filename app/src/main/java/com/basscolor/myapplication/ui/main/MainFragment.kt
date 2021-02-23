@@ -6,11 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.viewpager2.widget.ViewPager2
 import com.basscolor.myapplication.R
-import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.main_fragment.*
-import kotlinx.android.synthetic.main.pager_fragment.*
 
 
 class MainFragment : Fragment() {
@@ -20,6 +17,12 @@ class MainFragment : Fragment() {
     }
 
     private lateinit var viewModel: MainViewModel
+
+    private val indexItems = listOf(
+        R.drawable.call_icon,
+        R.drawable.hang_up,
+        R.drawable.original_usericon
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,22 +34,21 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adaptor_controller.setFragment(this)
-        adaptor_controller.setViewListener(object : ViewListener{
-            override fun setViewForPosition(position: Int): Fragment {
 
-                return SlidePageFragment()
+        val listener = (object : ViewListener {
+            override fun setViewForPosition(position: Int): Fragment {
+                return SlidePageFragment("ページ$position", indexItems[position])
             }
         })
+        val slidePagerAdaptor = SlidePagerAdaptor(this, listener)
+        slidePagerAdaptor.count = 3
+        adaptor_controller.setAdaptor(slidePagerAdaptor)
 
-        viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-        TabLayoutMediator(indicator, viewPager) { _, _ -> }.attach()
 
     }
 

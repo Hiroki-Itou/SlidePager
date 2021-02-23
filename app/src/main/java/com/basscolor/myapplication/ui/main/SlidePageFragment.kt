@@ -6,20 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.basscolor.myapplication.R
+import kotlinx.android.synthetic.main.slide_page.view.*
 
-class SlidePageFragment: Fragment() {
+class SlidePageFragment(private val text: String, private val resourceID: Int) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.slide_page, container, false)
+        val view = inflater.inflate(R.layout.slide_page, container, false)
+        view.page_text.text = text
+        view.imageView.setImageResource(resourceID)
+
+        return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
-
-
-    }
 }

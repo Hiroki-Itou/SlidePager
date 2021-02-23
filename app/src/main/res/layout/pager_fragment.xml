@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
@@ -23,14 +24,14 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/indicator"
-            android:layout_height="40dp"
             android:layout_width="wrap_content"
+            android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
             app:tabBackground="@drawable/indicator_selector"
             app:tabGravity="center"
-            app:tabIndicatorHeight="0dp"
             app:tabIndicatorFullWidth="true"
-            app:tabRippleColor="@null"/>
+            app:tabIndicatorHeight="0dp"
+            app:tabRippleColor="@null" />
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
